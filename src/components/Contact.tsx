@@ -32,7 +32,9 @@ export default function Contact() {
     setStatus({ type: null, message: '' });
 
     try {
+      console.log('Submitting form with data:', formData);
       const result = await sendContactEmail(formData);
+      
       if (result.success) {
         setStatus({
           type: 'success',
@@ -42,10 +44,11 @@ export default function Contact() {
       } else {
         throw new Error(result.error);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Form submission error:', error);
       setStatus({
         type: 'error',
-        message: 'Sorry, something went wrong. Please try again later.'
+        message: error.message || 'Sorry, something went wrong. Please try again later.'
       });
     } finally {
       setIsSubmitting(false);
