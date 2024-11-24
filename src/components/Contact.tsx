@@ -42,13 +42,15 @@ export default function Contact() {
         });
         setFormData({ name: '', email: '', message: '' });
       } else {
-        throw new Error(result.error);
+        const errorMessage = result.error?.message || 'Failed to send email';
+        console.error('Email sending failed:', result.error);
+        throw new Error(errorMessage);
       }
     } catch (error: any) {
       console.error('Form submission error:', error);
       setStatus({
         type: 'error',
-        message: error.message || 'Sorry, something went wrong. Please try again later.'
+        message: `Error sending message: ${error.message}. Please try again later or contact us directly at kolagantiaj1@gmail.com`
       });
     } finally {
       setIsSubmitting(false);
@@ -145,23 +147,29 @@ export default function Contact() {
                 ></textarea>
               </div>
               {status.type && (
-                <div className={`flex items-center gap-2 p-4 rounded-lg ${
-                  status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-                }`}>
-                  {status.type === 'success' ? (
-                    <CheckCircle className="w-5 h-5" />
-                  ) : (
-                    <XCircle className="w-5 h-5" />
-                  )}
-                  <p>{status.message}</p>
+                <div
+                  className={`mt-4 p-4 rounded-lg ${
+                    status.type === 'success'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-red-100 text-red-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {status.type === 'success' ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : (
+                      <XCircle className="w-5 h-5" />
+                    )}
+                    <p>{status.message}</p>
+                  </div>
                 </div>
               )}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-3 px-6 bg-purple-600 text-white rounded-lg transition-colors ${
-                  isSubmitting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-purple-700'
-                }`}
+                className={`w-full py-3 px-6 bg-purple-600 text-white rounded-lg ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'
+                } transition-colors`}
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>

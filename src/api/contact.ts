@@ -1,44 +1,38 @@
 import { Resend } from 'resend';
+import config from '../config';
 
-const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY);
+// Initialize Resend with API key
+const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY;
+const resend = new Resend(RESEND_API_KEY);
 
 export const sendContactEmail = async (data: { name: string; email: string; message: string }) => {
   try {
-    const { name, email, message } = data;
-    
-    if (!import.meta.env.VITE_RESEND_API_KEY) {
-      console.error('Resend API key is missing');
-      return { success: false, error: 'Configuration error' };
+    console.log('Attempting to send email with data:', data);
+
+    const response = await fetch(`${config.apiUrl}/send-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error?.message || 'Failed to send email');
     }
 
-    console.log('Sending email with data:', { name, email, message: message.substring(0, 50) + '...' });
-    
-    const response = await resend.emails.send({
-      from: 'MasonBird Agency <onboarding@resend.dev>',
-      to: ['kolagantiaj1@gmail.com'],
-      subject: `New Contact Form Submission from ${name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `,
-      reply_to: email
-    });
-
-    console.log('Email sent successfully:', response);
-    return { success: true, data: response };
+    console.log('Email sent successfully:', result);
+    return result;
   } catch (error: any) {
-    console.error('Error sending email:', {
-      error: error.message,
-      stack: error.stack,
-      details: error.response?.data
-    });
+    console.error('Error sending email:', error);
     return { 
       success: false, 
-      error: error.message || 'Failed to send email',
-      details: error.response?.data
+      error: {
+        message: error.message || 'Failed to send email',
+        name: error.name || 'UnknownError'
+      }
     };
   }
 };
