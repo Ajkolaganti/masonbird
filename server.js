@@ -1,6 +1,6 @@
 import express from 'express';
-import { Resend } from 'resend';
 import cors from 'cors';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,39 +8,37 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Initialize Resend
-const resend = new Resend(process.env.VITE_RESEND_API_KEY);
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  methods: ['POST', 'GET', 'OPTIONS'],
+  credentials: true
+}));
 
-// CORS configuration
-const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://masonbird.vercel.app', 'https://www.masonbird.com']  // Add your frontend domains
-    : 'http://localhost:3000',
-  methods: ['POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-};
-
-// Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'healthy' });
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.get('/api/test', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
-// Email endpoint
 app.post('/api/send-email', async (req, res) => {
+  console.log('Received request:', req.body);
+
   try {
     const { name, email, message } = req.body;
 
-    if (!process.env.VITE_RESEND_API_KEY) {
-      throw new Error('Resend API key is not configured');
+    if (!name || !email || !message) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Missing required fields' 
+      });
     }
 
-    const response = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'kolagantiaj1@gmail.com',
+    const { data, error } = await resend.emails.send({
+      from: 'MasonBird Contact <onboarding@resend.dev>',
+      to: ['your-email@example.com'],
+      reply_to: email,
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
@@ -48,31 +46,40 @@ app.post('/api/send-email', async (req, res) => {
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
         <p>${message}</p>
-      `
+      `,
     });
 
-    res.json({ success: true, data: response });
+    if (error) {
+      console.error('Resend API error:', error);
+      return res.status(400).json({ 
+        success: false,
+        error: error.message 
+      });
+    }
+
+    console.log('Email sent successfully:', data);
+    res.status(200).json({ 
+      success: true, 
+      message: 'Email sent successfully',
+      data 
+    });
+
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Server error:', error);
     res.status(500).json({ 
-      success: false, 
-      error: {
-        message: error.message || 'Failed to send email',
-        name: error.name || 'UnknownError'
-      }
+      success: false,
+      error: 'Failed to send email',
+      details: error.message 
     });
   }
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Global error:', err);
   res.status(500).json({ 
-    success: false, 
-    error: {
-      message: 'Internal server error',
-      name: 'ServerError'
-    }
+    success: false,
+    error: 'Internal server error',
+    details: err.message
   });
 });
 

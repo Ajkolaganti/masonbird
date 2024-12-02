@@ -1,74 +1,126 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs = [
     {
-      question: "How does the free development offer work?",
-      answer: "We develop your website at no upfront cost. You only pay for the ongoing support and maintenance after the 1-month free trial period."
+      question: "How does the zero upfront cost model work?",
+      answer: "We believe in our ability to deliver value. You only start paying once your project is live and generating value for your business. We offer a 1-month free trial period to ensure complete satisfaction.",
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
-      question: "What's included in the monthly support?",
-      answer: "Our monthly support includes 24/7 technical support, security monitoring, regular updates, performance optimization, and content updates."
+      question: "What technologies do you specialize in?",
+      answer: "We specialize in modern web technologies including React, Node.js, TypeScript, and various AI/ML frameworks. Our tech stack is constantly evolving to include the latest innovations in web development.",
+      gradient: "from-purple-500 to-pink-500"
     },
     {
-      question: "How long does it take to build a website?",
-      answer: "Typical development time ranges from 2-8 weeks, depending on the project complexity and requirements."
+      question: "How long does a typical project take?",
+      answer: "Project timelines vary based on complexity, but most projects are completed within 4-12 weeks. We follow an agile methodology with weekly updates and continuous deployment.",
+      gradient: "from-orange-500 to-red-500"
     },
     {
-      question: "Can I cancel the support service?",
-      answer: "Yes, you can cancel the monthly support service at any time with 30 days notice. There are no long-term contracts."
+      question: "Do you provide ongoing support?",
+      answer: "Yes, we offer comprehensive maintenance plans that include 24/7 monitoring, regular updates, security patches, and technical support to ensure your application runs smoothly.",
+      gradient: "from-green-500 to-emerald-500"
     },
     {
-      question: "Do you provide hosting services?",
-      answer: "Yes, hosting is included in our monthly support package, ensuring optimal performance and security."
+      question: "Can you help with existing projects?",
+      answer: "Absolutely! We can take over existing projects, perform code audits, implement new features, or help with optimization and modernization of your current application.",
+      gradient: "from-indigo-500 to-purple-500"
     }
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section className="py-24 bg-gradient-to-b from-purple-950 to-black relative overflow-hidden">
+      {/* Animated circuit board background */}
+      <div className="absolute inset-0 opacity-10">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <pattern
+            id="circuit-pattern"
+            x="0"
+            y="0"
+            width="50"
+            height="50"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M10 10h30v30h-30z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+            />
+            <circle cx="10" cy="10" r="2" fill="currentColor" />
+            <circle cx="40" cy="40" r="2" fill="currentColor" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Find answers to common questions about our services and pricing
+          <h2 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Everything you need to know about our services and process
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto space-y-4">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 * index }}
-              className="mb-4"
+              transition={{ delay: index * 0.1 }}
+              className="relative group"
             >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-6 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <span className="font-semibold text-left">{faq.question}</span>
-                {openIndex === index ? (
-                  <Minus className="w-5 h-5 text-purple-600" />
-                ) : (
-                  <Plus className="w-5 h-5 text-purple-600" />
-                )}
-              </button>
-              {openIndex === index && (
-                <div className="p-6 bg-gray-50 rounded-b-lg mt-1">
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              )}
+              {/* Gradient background effect */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${faq.gradient} rounded-xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`} />
+
+              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full p-6 flex items-center justify-between text-left"
+                >
+                  <span className="font-semibold text-white">{faq.question}</span>
+                  <motion.div
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {openIndex === index ? (
+                      <Minus className="w-5 h-5 text-purple-400" />
+                    ) : (
+                      <Plus className="w-5 h-5 text-purple-400" />
+                    )}
+                  </motion.div>
+                </button>
+
+                <AnimatePresence>
+                  {openIndex === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="p-6 pt-0 text-gray-400">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           ))}
         </div>

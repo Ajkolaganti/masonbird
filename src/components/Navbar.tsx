@@ -23,7 +23,9 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+      isScrolled ? 'glass shadow-lg' : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           <motion.a
@@ -32,28 +34,49 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             className="flex items-center space-x-2"
           >
-            <Code2 className={`w-8 h-8 ${isScrolled ? 'text-purple-600' : 'text-white'}`} />
-            <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>MasonBird</span>
+            <motion.div
+              whileHover={{ rotate: 180 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Code2 className={`w-8 h-8 ${
+                isScrolled ? 'text-purple-500' : 'text-white'
+              }`} />
+            </motion.div>
+            <span className={`text-xl font-bold ${
+              isScrolled ? 'text-gray-900' : 'text-white'
+            }`}>MasonBird</span>
           </motion.a>
 
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <a
+            {navLinks.map((link, index) => (
+              <motion.a
                 key={link.name}
                 href={link.href}
-                className={`${
-                  isScrolled ? 'text-gray-600 hover:text-purple-600' : 'text-gray-200 hover:text-white'
-                } transition-colors`}
+                className={`relative ${
+                  isScrolled ? 'text-gray-700' : 'text-gray-200'
+                } hover:text-purple-500 transition-colors`}
+                whileHover={{ y: -2 }}
+                custom={index}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
                 {link.name}
-              </a>
+                <motion.span
+                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500"
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.2 }}
+                />
+              </motion.a>
             ))}
-            <a
+            <motion.a
               href="#contact"
-              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full hover:shadow-lg transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Get Started
-            </a>
+            </motion.a>
           </div>
 
           <button

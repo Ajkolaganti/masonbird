@@ -8,10 +8,12 @@ import Team from './components/Team';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
+import BrandElement from './components/BrandElement';
 
 function App() {
   return (
     <div className="min-h-screen">
+      <BrandElement />
       <Navbar />
       <Hero />
       <Services />

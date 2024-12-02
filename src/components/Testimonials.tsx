@@ -1,74 +1,151 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
+import { Star, Quote } from 'lucide-react';
 
 export default function Testimonials() {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "CEO, TechStart",
+      name: "David Park",
+      role: "CTO at TechVision",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80",
+      content: "The team at MasonBird transformed our digital presence completely. Their AI integration solutions have given us a significant competitive advantage.",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      name: "Emma Wilson",
+      role: "Founder of EcoStart",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
-      content: "Working with this team was a game-changer for our business. They delivered a stunning website ahead of schedule."
+      content: "Zero upfront costs and exceptional quality - MasonBird delivered beyond our expectations. Our conversion rate increased by 150% after the redesign.",
+      gradient: "from-purple-500 to-pink-500"
     },
     {
       name: "Michael Chen",
-      role: "Founder, GrowthLabs",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80",
-      content: "The ongoing support is exceptional. They're always available to help and make updates quickly."
-    },
-    {
-      name: "Emily Davis",
-      role: "Marketing Director, Innovate",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80",
-      content: "The free trial period convinced us to sign up. The quality of work and support is outstanding."
+      role: "CEO at HealthTech",
+      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80",
+      content: "Working with MasonBird was a game-changer. Their healthcare dashboard solution streamlined our operations significantly.",
+      gradient: "from-orange-500 to-red-500"
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0
+    }
+  };
+
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-6">
+    <section className="py-24 bg-black relative overflow-hidden">
+      {/* Animated background circles */}
+      <div className="absolute inset-0 opacity-20">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: Math.random() * 300 + 50,
+              height: Math.random() * 300 + 50,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: `radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent)`,
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: Math.random() * 5 + 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Client Testimonials</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it - hear what our clients have to say
+          <h2 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+            Client Success Stories
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Hear from our clients about their transformative experiences
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto"
+        >
           {testimonials.map((testimonial, index) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 * index }}
-              className="bg-white p-8 rounded-xl shadow-lg"
+              key={testimonial.name}
+              variants={itemVariants}
+              className="relative group"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="font-semibold">{testimonial.name}</h3>
-                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+              {/* Gradient background effect */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${testimonial.gradient} rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500`} />
+              
+              <div className="relative h-full p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+                <div className="absolute -top-4 -right-4">
+                  <Quote className="w-8 h-8 text-purple-500 opacity-50" />
                 </div>
+
+                <div className="flex items-center gap-4 mb-6">
+                  <motion.img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-purple-500/20"
+                    whileHover={{ scale: 1.1 }}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-white">{testimonial.name}</h3>
+                    <p className={`text-sm bg-clip-text text-transparent bg-gradient-to-r ${testimonial.gradient}`}>
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+                  ))}
+                </div>
+
+                <p className="text-gray-300 leading-relaxed">
+                  {testimonial.content}
+                </p>
+
+                <motion.div
+                  className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${testimonial.gradient} flex items-center justify-center`}>
+                    <Quote className="w-4 h-4 text-white" />
+                  </div>
+                </motion.div>
               </div>
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-600">{testimonial.content}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
