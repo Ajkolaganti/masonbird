@@ -1,303 +1,183 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code2, Rocket, Sparkles, CheckCircle2, Clock, Shield, Cpu, Zap, Award } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Code2, Rocket, Sparkles } from 'lucide-react';
 
 export default function Hero() {
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-
-  const newsItems = [
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Zero Upfront Cost",
-      description: "Start your project with no initial investment",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: <Clock className="w-6 h-6" />,
-      title: "1-Month Free Trial",
-      description: "Test our services risk-free for 30 days",
-      gradient: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: "24/7 Support",
-      description: "Round-the-clock dedicated technical assistance",
-      gradient: "from-orange-500 to-red-500"
-    },
-    {
-      icon: <Cpu className="w-6 h-6" />,
-      title: "AI-Powered Solutions",
-      description: "Cutting-edge artificial intelligence integration",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      icon: <CheckCircle2 className="w-6 h-6" />,
-      title: "100% Satisfaction",
-      description: "Guaranteed results or your money back",
-      gradient: "from-indigo-500 to-purple-500"
-    },
-    {
-      icon: <Award className="w-6 h-6" />,
-      title: "Expert Development",
-      description: "Industry-leading web development team",
-      gradient: "from-pink-500 to-rose-500"
+  // Text animation variants
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
     }
-  ];
+  };
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % newsItems.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
+  // Letter animation variants
+  const letterVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  // Split text into letters for animation
+  const AnimatedText = ({ text, className }: { text: string, className: string }) => (
+    <div className={`flex overflow-hidden ${className}`}>
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          variants={letterVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: index * 0.05 }}
+          className="inline-block"
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </div>
+  );
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[#1a1a1a]" />
-      
-      <div className="absolute inset-0">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 1px, transparent 1px)`,
-          backgroundSize: '24px 24px'
-        }} />
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px)`,
-          backgroundSize: '96px 96px'
-        }} />
-      </div>
-
-      <div className="absolute inset-0 opacity-20">
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute -inset-[100%] opacity-30"
-            animate={{
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 15 + i * 5,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            <div
-              className="absolute inset-0"
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[#0a0a0a]">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-purple-900 via-transparent to-transparent" />
+        
+        {/* Animated lines */}
+        <div className="absolute inset-0">
+          {[...Array(10)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute h-[2px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"
               style={{
-                background: `radial-gradient(circle at ${50 + i * 30}% ${50 + i * 20}%, 
-                  rgba(255, 255, 255, 0.03),
-                  rgba(255, 255, 255, 0.02),
-                  transparent 60%)`
+                top: `${10 + i * 10}%`,
+                left: '-100%',
+                right: '-100%',
+              }}
+              animate={{
+                x: ['0%', '100%'],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 8,
+                delay: i * 0.2,
+                repeat: Infinity,
+                ease: "linear"
               }}
             />
-          </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {/* Animated dots */}
+        {[...Array(50)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              y: ['-20px', '20px'],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              y: {
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-              },
-              opacity: {
-                duration: 2 + Math.random() * 2,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-              },
-            }}
-          >
-            <div className={`
-              text-xs font-mono backdrop-blur-sm rounded px-2 py-1
-              ${i % 4 === 0 ? 'text-white/20 border border-white/10' : 
-                i % 4 === 1 ? 'text-white/20 border border-white/10' : 
-                i % 4 === 2 ? 'text-white/20 border border-white/10' :
-                'text-white/20 border border-white/10'}
-            `}>
-              {i % 5 === 0 && '<React />'}
-              {i % 5 === 1 && '{ state }'}
-              {i % 5 === 2 && '// Code'}
-              {i % 5 === 3 && 'function()'}
-              {i % 5 === 4 && '[Array]'}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="absolute inset-0">
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={`line-${i}`}
-            className="absolute h-px w-full bg-gradient-to-r from-transparent via-white/5 to-transparent"
+            className="absolute w-1 h-1 bg-purple-500/30 rounded-full"
             style={{
-              top: `${(i + 1) * 20}%`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
             }}
             animate={{
-              x: ['-100%', '100%'],
-              opacity: [0, 0.1, 0],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
             }}
             transition={{
-              x: {
-                duration: 15,
-                repeat: Infinity,
-                ease: "linear",
-              },
-              opacity: {
-                duration: 15,
-                repeat: Infinity,
-                ease: "linear",
-                times: [0, 0.5, 1],
-              },
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+              ease: "easeInOut",
             }}
           />
         ))}
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
-        >
-          <div className="mb-16 relative max-w-4xl mx-auto">
-            <div className="h-24 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="h-full flex items-center justify-center px-6"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${newsItems[currentSlide].gradient}`}>
-                      {newsItems[currentSlide].icon}
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-white">
-                        {newsItems[currentSlide].title}
-                      </h3>
-                      <p className="text-gray-300">
-                        {newsItems[currentSlide].description}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            <div className="flex justify-center gap-2 mt-4">
-              {newsItems.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full ${
-                    currentSlide === index 
-                      ? 'bg-purple-500 w-6' 
-                      : 'bg-white/20'
-                  }`}
-                  animate={{ width: currentSlide === index ? 24 : 8 }}
-                  transition={{ duration: 0.3 }}
-                />
-              ))}
-            </div>
+        <div className="flex flex-col items-center justify-center text-center">
+          {/* Main heading with letter animation */}
+          <div className="mb-8">
+            <AnimatedText 
+              text="TRANSFORM YOUR" 
+              className="text-4xl md:text-7xl font-bold text-white mb-2"
+            />
+            <AnimatedText 
+              text="BUSINESS DIGITALLY" 
+              className="text-4xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text"
+            />
           </div>
 
-          <motion.h1 
-            className="text-6xl md:text-8xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
-            animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
-            transition={{ duration: 10, repeat: Infinity }}
+          {/* Subtitle with fade in */}
+          <motion.p
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12"
           >
-            Future of Web
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl md:text-2xl mb-12 text-gray-300 max-w-3xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Creating next-generation digital experiences with cutting-edge technology and zero upfront costs.
+            Join an elite network of businesses, connect with real customers, and propel your digital presence forward with custom web development.
           </motion.p>
 
-          <div className="flex flex-col md:flex-row gap-6 justify-center mb-16">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden"
-            >
-              <span className="relative z-10">Start Free Trial</span>
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600"
-                initial={{ x: "100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border-2 border-white/50 rounded-full font-semibold text-lg hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
-            >
-              View Portfolio
-            </motion.button>
-          </div>
-
+          {/* CTA buttons with hover effect */}
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
+            className="flex flex-col md:flex-row gap-6"
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05, backgroundColor: "#4c1d95" }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-purple-700 rounded-full text-lg font-semibold text-white transition-colors duration-300"
+            >
+              Start Free Trial
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 border-2 border-purple-700 rounded-full text-lg font-semibold text-white transition-colors duration-300"
+            >
+              Learn More
+            </motion.button>
+          </motion.div>
+
+          {/* Stats section with counter animation */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20"
           >
             {[
-              { icon: "https://cdn.worldvectorlogo.com/logos/react-2.svg", name: "React" },
-              { icon: "https://cdn.worldvectorlogo.com/logos/typescript.svg", name: "TypeScript" },
-              { icon: "https://cdn.worldvectorlogo.com/logos/tailwindcss.svg", name: "Tailwind" },
-              { icon: "https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg", name: "Node.js" }
-            ].map((tech, index) => (
-              <motion.div
-                key={index}
-                className="flex flex-col items-center gap-2"
-                whileHover={{ y: -5 }}
-              >
-                <img src={tech.icon} alt={tech.name} className="h-12 w-12" />
-                <p className="text-sm text-gray-400">{tech.name}</p>
-              </motion.div>
+              { number: "100+", label: "WEBSITES DELIVERED" },
+              { number: "50M+", label: "LINES OF CODE" },
+              { number: "100%", label: "CLIENT SATISFACTION" }
+            ].map((stat, index) => (
+              <div key={index} className="text-center">
+                <motion.h3
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.5 + index * 0.2, type: "spring" }}
+                  className="text-5xl md:text-6xl font-bold text-white mb-2"
+                >
+                  {stat.number}
+                </motion.h3>
+                <p className="text-sm text-gray-400 tracking-wider">
+                  {stat.label}
+                </p>
+              </div>
             ))}
           </motion.div>
-        </motion.div>
-      </div>
-
-      <motion.div 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
-      >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <motion.div 
-            className="w-1 h-2 bg-white/50 rounded-full mt-2"
-            animate={{ y: [0, 16, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

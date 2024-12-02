@@ -54,13 +54,13 @@ export default function Contact() {
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      content: "+1 (555) 123-4567",
+      content: "+1 (702) 800-0833",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Visit Us",
-      content: "123 Innovation Drive, Tech City, TC 12345",
+      content: "258 Timberland Ave, Dawsonville, GA 30534",
       gradient: "from-orange-500 to-red-500"
     }
   ];
