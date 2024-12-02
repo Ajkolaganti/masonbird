@@ -51,10 +51,99 @@ export default function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[#0a0a0a]">
-        {/* Animated gradient overlay */}
+        {/* Large Background Logo */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center opacity-5"
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          {/* Main circle */}
+          <div className="relative w-[800px] h-[800px]">
+            <motion.div
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600"
+              animate={{
+                scale: [1, 1.1, 1],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            
+            {/* Inner geometric shapes */}
+            <motion.div
+              className="absolute inset-[10%] bg-black rounded-full flex items-center justify-center"
+            >
+              {/* M letter stylized */}
+              <motion.svg
+                viewBox="0 0 24 24"
+                className="w-96 h-96"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <motion.path
+                  d="M 4 18 L 4 6 L 8 12 L 12 6 L 16 12 L 20 6 L 20 18"
+                  fill="none"
+                  stroke="url(#gradient)"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }}
+                />
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#9333EA" />
+                    <stop offset="100%" stopColor="#EC4899" />
+                  </linearGradient>
+                </defs>
+              </motion.svg>
+            </motion.div>
+
+            {/* Orbiting dots */}
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-4 h-4 rounded-full bg-purple-500/30"
+                style={{
+                  top: '50%',
+                  left: '50%',
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 360],
+                  x: [0, Math.cos(i * (2 * Math.PI / 8)) * 400],
+                  y: [0, Math.sin(i * (2 * Math.PI / 8)) * 400],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                  ease: "linear"
+                }}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Existing animated gradient overlay */}
         <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-purple-900 via-transparent to-transparent" />
         
-        {/* Animated lines */}
+        {/* Existing animated lines */}
         <div className="absolute inset-0">
           {[...Array(10)].map((_, i) => (
             <motion.div
@@ -79,10 +168,10 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* Animated dots */}
+        {/* Existing animated dots */}
         {[...Array(50)].map((_, i) => (
           <motion.div
-            key={i}
+            key={`dot-${i}`}
             className="absolute w-1 h-1 bg-purple-500/30 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,

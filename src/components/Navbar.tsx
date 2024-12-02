@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import AnimatedLogo from './AnimatedLogo';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,14 +35,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             className="flex items-center space-x-2"
           >
-            <motion.div
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Code2 className={`w-8 h-8 ${
-                isScrolled ? 'text-purple-500' : 'text-white'
-              }`} />
-            </motion.div>
+            <AnimatedLogo />
             <span className={`text-xl font-bold ${
               isScrolled ? 'text-gray-900' : 'text-white'
             }`}>MasonBird</span>

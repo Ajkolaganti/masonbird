@@ -7,58 +7,40 @@ export default function Portfolio() {
 
   const projects = [
     {
-      title: "AI-Powered E-commerce",
-      description: "Next-gen shopping platform with personalized recommendations",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80",
-      category: "E-commerce",
-      tech: ["React", "Node.js", "TensorFlow"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Healthcare Analytics",
-      description: "Real-time patient monitoring dashboard with predictive analytics",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80",
-      category: "Healthcare",
-      tech: ["React", "Python", "D3.js"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Smart Real Estate",
-      description: "VR-enabled property platform with AI valuation",
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80",
-      category: "Real Estate",
-      tech: ["React", "Three.js", "ML"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Crypto Exchange",
-      description: "High-frequency trading platform with real-time analytics",
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80",
+      title: "GV Financial Group",
+      description: "Professional financial services website with comprehensive service listings and contact integration",
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80",
       category: "Finance",
-      tech: ["React", "WebSocket", "Go"],
-      link: "#",
-      github: "#"
+      tech: ["React", "Tailwind", "Framer Motion"],
+      link: "https://gv-financial-group.vercel.app/",
+      features: ["Service Listings", "Contact Form", "Professional Design"]
     },
     {
-      title: "Social Network",
-      description: "Next-gen social platform with AR features",
-      image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&q=80",
-      category: "Social",
-      tech: ["React", "WebRTC", "AR.js"],
-      link: "#",
-      github: "#"
+      title: "Baby Diary",
+      description: "Digital baby milestone tracking and memory keeping application",
+      image: "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&q=80",
+      category: "Healthcare",
+      tech: ["React", "Node.js", "MongoDB"],
+      link: "https://babydiary.vercel.app/",
+      features: ["User Authentication", "Data Storage", "Photo Upload"]
     },
     {
-      title: "IoT Dashboard",
-      description: "Smart home control system with ML predictions",
-      image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80",
-      category: "IoT",
-      tech: ["React", "MQTT", "TensorFlow"],
-      link: "#",
-      github: "#"
+      title: "ImageAI",
+      description: "AI-powered image processing and text extraction platform",
+      image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?auto=format&fit=crop&q=80",
+      category: "AI",
+      tech: ["React", "AI/ML", "OCR"],
+      link: "https://image-ai-tau.vercel.app/",
+      features: ["Text Extraction", "Excel Conversion", "Image Search"]
+    },
+    {
+      title: "Job Seekers",
+      description: "Modern job search and application tracking platform",
+      image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80",
+      category: "Employment",
+      tech: ["React", "API Integration", "Redux"],
+      link: "https://job-seeekers.netlify.app/",
+      features: ["Job Search", "Application Tracking", "Resume Upload"]
     }
   ];
 
@@ -69,15 +51,15 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" className="py-24 bg-gradient-to-b from-black to-purple-950 relative overflow-hidden">
-      {/* Animated particles background */}
+      {/* Background effects */}
       <div className="absolute inset-0 opacity-30">
         {[...Array(50)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-white rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
             }}
             animate={{
               y: [null, -20, null],
@@ -103,7 +85,7 @@ export default function Portfolio() {
             Our Work
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Explore our latest projects pushing the boundaries of technology
+            Explore our latest projects showcasing our expertise across different industries
           </p>
         </motion.div>
 
@@ -128,7 +110,7 @@ export default function Portfolio() {
         {/* Projects grid */}
         <motion.div 
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           <AnimatePresence>
             {filteredProjects.map((project, index) => (
@@ -147,37 +129,29 @@ export default function Portfolio() {
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="absolute bottom-0 p-6 w-full">
-                    <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
-                    <p className="text-gray-300 mb-4">{project.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.map((tech) => (
-                        <span key={tech} className="px-3 py-1 text-sm bg-white/10 rounded-full text-gray-300">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="absolute bottom-0 p-6 w-full">
+                      <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+                      <p className="text-gray-300 mb-4">{project.description}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tech.map((tech) => (
+                          <span key={tech} className="px-3 py-1 text-sm bg-white/10 rounded-full text-gray-300">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
 
-                    <div className="flex gap-4">
                       <motion.a
                         href={project.link}
-                        className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-full text-white hover:bg-purple-700 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        <ExternalLink className="w-5 h-5" />
-                      </motion.a>
-                      <motion.a
-                        href={project.github}
-                        className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Github className="w-5 h-5" />
+                        <ExternalLink className="w-4 h-4" />
+                        Visit Site
                       </motion.a>
                     </div>
                   </div>

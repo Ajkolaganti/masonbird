@@ -54,7 +54,7 @@ export default function Contact() {
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      content: "+1 (702) 800-0833",
+      content: "+1 (702) 800-0933",
       gradient: "from-purple-500 to-pink-500"
     },
     {
